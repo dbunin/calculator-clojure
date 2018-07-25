@@ -1,4 +1,5 @@
 (ns calculator.stack
+  "Implementation of stack datastructure"
   (:use [slingshot.slingshot :only [throw+ try+]])
   (:refer-clojure :exclude (list peek pop)))
 
@@ -25,7 +26,7 @@
     int n - number to add to the stack
   Returns: top element of the stack
   Throws: error of :type :invalid if n is empty"
-  [stack, n]
+  [stack n]
   (if (and (nil? n) (not (integer? n)))
     (throw+ {:type ::invalid :message "attr is empty or not int"})
     (do
@@ -34,7 +35,10 @@
 
 (defn pop
   "Removes the last element of the stack
-  Returns: removed element of the stack"
+  Params:
+    atom s - stack
+  Returns: removed element of the stack
+  Throws: error of :type :invalid if n is empty"
   [stack]
   (if (empty? @stack)
     (throw+ {:type ::not-found :message "can't pop from empty stack"})
