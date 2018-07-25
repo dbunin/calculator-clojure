@@ -9,5 +9,4 @@
      [clj-json "0.5.3"]]
   :dev-dependencies
     [[lein-run "1.0.0-SNAPSHOT"]]
-  ;:main cabinet.run
-  )
+  :main calculator.run)
