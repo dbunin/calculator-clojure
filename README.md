@@ -10,7 +10,8 @@ The API is RESTFUL and generally returns integers with JSON messages for errors.
 
 You can test the service by forking the repository. After you have all your files local you can start the service using [leiningen](https://leiningen.org), by writing the following commands:
 
-```$ lein deps
+```
+   $ lein deps
    $ lein run
 ```
 
