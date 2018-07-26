@@ -10,8 +10,8 @@ The API is RESTFUL and generally returns integers with JSON messages for errors.
 
 You can test the service by forking the repository. After you have all your files local you can start the service using [leiningen](https://leiningen.org), by writing the following commands:
 
-`lein deps
- lein run`
+```$ lein deps
+   $ lein run```
 
 This will start the [jetty](https://www.eclipse.org/jetty/) server on localhost on port 8080. Now you can use the API endpoints on `localhost:8080/calc/...`
 
