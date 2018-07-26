@@ -39,6 +39,8 @@
          (json-response {"error" "resource not found"}))
       (catch JsonParseException e
         (json-response {"error" "malformed json"}))
+      (catch NumberFormatException _
+        (json-response {"error" "attr should be a number"}))
       (catch IndexOutOfBoundsException _
         (json-response {"error" "There is no stack with such id"}))
       (catch [:type :calculator.calculator/not-enough-elements] {:keys [message]}
