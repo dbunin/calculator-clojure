@@ -1,5 +1,5 @@
 (ns calculator.run
   (:use ring.adapter.jetty)
-  (:require [cabinet.web :as web]))
+  (:require [calculator.core :as core]))
 
-(run-jetty #'web/app {:port 8080})
+(run-jetty #'core/app {:port 8080})

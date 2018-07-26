@@ -1,72 +1,77 @@
 (ns calculator.core
   "Implementation of REST API for the calculator service"
-  (:use compojure.core)
-  (:use ring.middleware.json-params)
+  (:use compojure.core
+            ring.middleware.json-params)
   (:require [clj-json.core :as json]
             [calculator.stack :as stack]
             [calculator.calculator :as calculator])
-  (:import org.codehaus.jackson.JsonParseException)
-  (:use [slingshot.slingshot :only [throw+ try+]]))
+  (:use [slingshot.slingshot :only [throw+ try+]])
+  (:import org.codehaus.jackson.JsonParseException))
 
-(def stacks (atom {}))
+(def stacks (list (stack/create-stack) (stack/create-stack) (stack/create-stack)))
 
-(defn add-stack [id]
+(defn add-stack
   "Adds stack with id :id the list"
-  (let [new-attrs (merge (get id) stack/create-stack)]
-    (swap! stacks assoc id new-attrs)
-    new-attrs))
+  [id]
+  (let [new-stack (merge (@stacks id) (stack/create-stack))]
+    (swap! stacks assoc id new-stack)
+    new-stack))
 
-(defn get [id]
+(defn get-stack
   "Returns the stack with id :id
   If the stack with id :id doesn't exist, creates it"
-  (or (@stacks id)
-      (@(add-stack id) id)))
+  [id]
+  (nth stacks id))
 
-(defn json-response [data & [status]]
+(defn json-response
   "Returns the json messages"
+  [data & [status]]
   {:status (or status 200)
    :headers {"Content-Type" "application/json"}
    :body (json/generate-string data)})
 
-(defn wrap-error-handling [handler]
+(defn wrap-error-handling
   "Returns error messages if error occurs"
+  [handler]
   (fn [req]
     (try+
       (or (handler req)
          (json-response {"error" "resource not found"}))
       (catch JsonParseException e
         (json-response {"error" "malformed json"}))
-      (catch [:type :calculator/not-enough-elements] {:keys [message]}
+      (catch IndexOutOfBoundsException _
+        (json-response {"error" "There is no stack with such id"}))
+      (catch [:type :calculator.calculator/not-enough-elements] {:keys [message]}
         (json-response {"error" message}))
-      (catch [:type :stack/not-found] {:keys [message]}
+      (catch [:type :calculator.stack/not-found] {:keys [message]}
         (json-response {"error" message}))
-      (catch [:type :stack/invalid] {:keys [message]}
+      (catch [:type :calculator.stack/invalid] {:keys [message]}
         (json-response {"error" message}))
-      (catch [:type :stack/invalid] {:keys [message]}
+      (catch [:type :calculator.stack/invalid] {:keys [message]}
         (json-response {"error" message})))))
 
 (defroutes handler
   "Router for the application"
   (GET "/calc/:id/peek" [id]
-    (json-response (stack/peek (get id))))
+    (json-response (stack/peek (get-stack (Integer. id)))))
 
-  (PUT "/calc/:id/push/:n" [id n]
-    (json-response (stack/push (get id) n)))
+  (GET "/calc/:id/push/:n" [id n]
+    (json-response (stack/push (get-stack (Integer. id)) (Integer. n))))
 
-  (DELETE "/calc/:id/pop" [id]
-    (json-response (stack/pop (get id))))
+  (GET "/calc/:id/pop" [id]
+    (json-response (stack/pop (get-stack (Integer. id)))))
 
-  (POST "/calc/:id/add" [id]
-    (json-response (calculator/calculate (get id) +)))
+  (GET "/calc/:id/add" [id]
+    (json-response (calculator/calculate (get-stack (Integer. id)) +)))
 
-  (POST "/calc/:id/subtract" [id]
-    (json-response (calculator/calculate (get id) -)))
+  (GET "/calc/:id/subtract" [id]
+    (json-response (calculator/calculate (get-stack (Integer. id)) -)))
 
-  (POST "/calc/:id/multiply" [id]
-    (json-response (calculator/calculate (get id) *)))
+  (GET "/calc/:id/multiply" [id]
+    (json-response (calculator/calculate (get-stack (Integer. id)) *)))
 
-  (POST "/calc/:id/multiply" [id]
-    (json-response (calculator/calculate (get id) /))))
+  (GET "/calc/:id/multiply" [id]
+    (json-response (calculator/calculate (get-stack (Integer. id)) /))))
 
 (def app
   (-> handler
