@@ -6,7 +6,8 @@
      [ring/ring-jetty-adapter "1.7.0-RC1"]
      [ring-json-params "0.1.3"]
      [compojure "0.4.0"]
-     [clj-json "0.5.3"]]
+     [clj-json "0.5.3"]
+     [ring/ring-mock "0.3.2"]]
   :dev-dependencies
     [[lein-run "1.0.0-SNAPSHOT"]]
   :main calculator.run)
