@@ -6,13 +6,18 @@
 (def stacks (atom {}))
 
 (defn update-stacks
-  "Creates a new stack
-  Returns: updated stack"
+  "Updates stack in collection
+  Params:
+    int stack - stack to update
+    int id - id of a stack
+  Returns: stacks"
   [stack id]
   (swap! stacks assoc id stack))
 
 (defn create-stack
   "Creates a new stack
+  Params:
+    int id - id of a stack
   Returns: newly created stack"
   [id]
   (do
@@ -28,7 +33,7 @@
 (defn peek
   "Gets top element of the stack
   Params:
-    list stack - stack
+    int id - id of a stack
   Returns: top element of the stack
   Throws: throws error of :type :not-found if stack is empty"
   [id]
@@ -38,7 +43,7 @@
 (defn push
   "Pushes a number onto a stack
   Params:
-    list stack - stack
+    int id - id of a stack
     int n - number to add to the stack
   Returns: top element of the stack
   Throws: error of :type :invalid if n is empty"
@@ -54,7 +59,7 @@
 (defn pop*
   "Removes the last element of the stack
   Params:
-    list s - stack
+    int id - id of a stack
   Returns: removed element of the stack
   Throws: error of :type :invalid if n is empty"
   [id]

@@ -6,7 +6,7 @@
 (defn calculate
   "Removes the top and top-1 from the stack and replaces it with (calc-function stack[top-1] stack[top])
   Params:
-    atom stack - stack
+    int id - id of a stack
     function calc-function - function to be executed on top two numbers of stack
   Returns: result of executed given function
   Throws: throws error of :type :not-enough-elements if stack is doesn't include 2 elements"
