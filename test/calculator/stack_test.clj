@@ -6,37 +6,35 @@
 (deftest peek-epmty-stack-test
   (testing "Testing that peeking epmty stack throws exception"
     (try+
-    (stack/peek (stack/create-stack))
-    (catch [:type :calculator.stack/not-found] _
-      (is 1 1))
-    (else (is 1 0)))))
+      (stack/peek 0)
+      (catch [:type :calculator.stack/not-found] _
+        (is 1 1))
+      (else (is 1 0)))))
 
 (deftest push-empty-attr-test
   (testing "Testing throwing exception when giving empty attribute"
     (try+
-      (stack/push (stack/create-stack) nil)
+      (stack/push 0 nil)
       (catch [:type :calculator.stack/invalid] _
         (is 1 1))
       (else (is 1 0)))))
 
 (deftest push-test
-  (let [stack (stack/create-stack)]
-    (testing "Testing that push returns the pushed element"
-      (is 1 (stack/push stack 1)))
-    (testing "Testing that peek after push returns pushed element"
-      (is 1 (stack/peek stack)))))
+  (testing "Testing that push returns the pushed element"
+    (is 1 (stack/push 0 1)))
+  (testing "Testing that peek after push returns pushed element"
+    (is 1 (stack/peek 0))))
 
-(deftest pop
-  (let [stack (stack/create-stack)]
-    (testing "Testing pop empty stack"
-      (try+
-       (stack/pop stack)
-       (catch [:type :calculator.stack/not-found] _
-         (is 1 1))
-       (else (is 1 0))))
-    (testing "Testing that pop returns the top element and deletes it"
-      (do
-        (stack/push stack 1)
-        (stack/push stack 2)
-        (is 2 (stack/pop stack))
-        (is 1 (stack/peek stack))))))
+(deftest pop*-test
+  (testing "Testing pop empty stack"
+    (try+
+      (stack/pop* 1)
+      (catch [:type :calculator.stack/not-found] _
+        (is 1 1))
+      (else (is 1 0))))
+  (testing "Testing that pop returns the top element and deletes it"
+    (do
+      (stack/push 1 1)
+      (stack/push 1 2)
+      (is 2 (stack/pop* 1))
+      (is 1 (stack/peek 1)))))

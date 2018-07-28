@@ -7,13 +7,9 @@
 
 (defn update-stacks
   "Creates a new stack
-  Returns: newly created stack"
+  Returns: updated stack"
   [stack id]
-  (do
-    (swap! stacks assoc id stack)
-    (@stacks id))
-  (println (@stacks id))
-  (list id stack))
+  (swap! stacks assoc id stack))
 
 (defn create-stack
   "Creates a new stack
@@ -21,12 +17,12 @@
   [id]
   (do
    (swap! stacks assoc id ())
-   (list id (@stacks id))))
+   (@stacks id)))
 
 (defn get-stack
   "Returns: stack with id :id"
   [id]
-  (or (list id (@stacks id))
+  (or (@stacks id)
       (create-stack id)))
 
 (defn peek
@@ -35,8 +31,8 @@
     list stack - stack
   Returns: top element of the stack
   Throws: throws error of :type :not-found if stack is empty"
-  [[id stack]]
-  (or (first stack)
+  [id]
+  (or (first (get-stack id))
       (throw+ {:type ::not-found :message "stack is empty"})))
 
 (defn push
@@ -46,13 +42,14 @@
     int n - number to add to the stack
   Returns: top element of the stack
   Throws: error of :type :invalid if n is empty"
-  [[id stack] n]
-  (if (and (nil? n) (not (integer? n)))
-    (throw+ {:type ::invalid :message "attr is empty or not int"})
-    (->
-      (conj stack n)
-      (update-stacks id)
-      (peek))))
+  [id n]
+  (let [stack (get-stack id)]
+    (if (and (nil? n) (not (integer? n)))
+      (throw+ {:type ::invalid :message "attr is empty or not int"})
+      (->
+        (conj stack n)
+        (update-stacks id))
+      (peek id))))
 
 (defn pop*
   "Removes the last element of the stack
@@ -60,12 +57,12 @@
     list s - stack
   Returns: removed element of the stack
   Throws: error of :type :invalid if n is empty"
-  [[id stack]]
-  (if (empty? stack)
-    (throw+ {:type ::not-found :message "can't pop from empty stack"})
-    (let [poped-stack (peek (list id stack))]
-      (->
-       (pop stack)
-       (update-stacks id))
-      (println poped-stack)
-      poped-stack)))
+  [id]
+  (let [stack (get-stack id)]
+    (if (empty? stack)
+      (throw+ {:type ::not-found :message "can't pop from empty stack"})
+      (let [poped-stack (peek id)]
+        (->
+        (pop stack)
+        (update-stacks id))
+        poped-stack))))

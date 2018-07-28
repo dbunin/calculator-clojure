@@ -12,10 +12,8 @@
   Throws: throws error of :type :not-enough-elements if stack is doesn't include 2 elements"
   [id calc-function]
   (try+
-    (let [sum (calc-function (stack/pop* (stack/get-stack id)) (stack/pop* (stack/get-stack id)))]
-      (->
-       (stack/get-stack id)
-       (stack/push sum))
-      sum)
+    (let [result (calc-function (stack/pop* id) (stack/pop* id))]
+       (stack/push id result)
+      result)
    (catch [:type :calculator.stack/not-found] _
      (throw+ {:type ::not-enough-elements :message "Stack doesn't have two top elements"}))))

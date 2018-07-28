@@ -42,19 +42,16 @@
   (GET "/calc/:id/peek" [id]
     (json-response (->
                     (Integer. id)
-                    (stack/get-stack)
                     (stack/peek))))
 
   (GET "/calc/:id/push/:n" [id n]
     (json-response (->
                     (Integer. id)
-                    (stack/get-stack)
                     (stack/push (Integer. n)))))
 
   (GET "/calc/:id/pop" [id]
     (json-response (->
                     (Integer. id)
-                    (stack/get-stack)
                     (stack/pop*))))
 
   (GET "/calc/:id/add" [id]
