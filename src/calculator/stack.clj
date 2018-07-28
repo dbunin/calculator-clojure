@@ -53,8 +53,8 @@
       (throw+ {:type ::invalid :message "attr is empty or not int"})
       (->
         (conj stack n)
-        (update-stacks id))
-      (peek id))))
+        (update-stacks id)))
+    (peek id)))
 
 (defn pop*
   "Removes the last element of the stack
