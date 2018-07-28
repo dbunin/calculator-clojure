@@ -6,7 +6,7 @@ Implementation of stack calculator via REST API endpoints. Supports addition, su
 
 ## API overview
 
-The API is RESTFUL and generally returns integers with JSON messages for errors. 
+The API is RESTFUL and generally returns integers with JSON messages for errors.
 
 You can test the service by forking the repository. After you have all your files local you can start the service using [leiningen](https://leiningen.org), by writing the following commands:
 
@@ -19,7 +19,7 @@ This will start the [jetty](https://www.eclipse.org/jetty/) server on localhost 
 
 ## Usage
 
-The stack calculator saves the elements in custom datastructure stack. Currently the application supports up to 3 stacks with relative id's. There is a number of functionalities supported by the service such as peek, push, pop, add, subtract, multiply, and divide. These functionalities are described in this chapter.
+The stack calculator saves the elements in custom datastructure stack. There is a number of functionalities supported by the service such as peek, push, pop, add, subtract, multiply, and divide. These functionalities are described in this chapter.
 
 ### Peek
 
